@@ -32,7 +32,7 @@ export ZSH_JOJE_LABEL=cwd-2   # cwd-1 cwd-2 (cwd-3) cwd-full cwd-only git-only
 
 ## Update
 ```sh
-cd $HOME/.oh-my-zsh/custom/themes/joje
+cd ~/.oh-my-zsh/custom/themes/joje
 git pull --ff-only origin master
 ```
 
