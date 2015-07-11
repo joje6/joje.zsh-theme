@@ -14,7 +14,7 @@ Or you can cloning and creating a symbol link by yourself:
 ```sh
 mkdir -p $ZSH_CUSTOM/themes
 cd $ZSH_CUSTOM/themes
-git clone git://github.com/tonyseek/oh-my-zsh-seeker-theme.git joje
+git clone git://github.com/joje6/joje.zsh-theme.git joje
 ln -s joje/*.zsh-theme .
 ```
 
