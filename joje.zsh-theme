@@ -12,6 +12,7 @@ eval lightblue='$FG[081]'
 
 # echo $ZSH_JOJE_COLOR
 # echo $ZSH_JOJE_LABEL
+# echo $ZSH_JOJE_CWD_LEVEL
 
 if [[ $ZSH_JOJE_COLOR == "blue" ]] then
   color=$blue;
@@ -55,21 +56,30 @@ vcs_status() {
     git_prompt_info
   fi
 }
-
-if [[ $ZSH_JOJE_LABEL == "cwd-1" ]] then
-  PROMPT='$(vcs_status)$eee%1~$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd-2" ]] then
-  PROMPT='$(vcs_status)$eee%2~$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd-3" ]] then
-  PROMPT='$(vcs_status)$eee%3~$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd-full" ]] then
-  PROMPT='$(vcs_status)$eee%~$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "vcs-only" ]] then
-  PROMPT='$(vcs_status):~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd-only" ]] then
-  PROMPT='$eee%~$fff:~$%b '
+ 
+if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]] then
+  cwd_style='%1~'
+elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]] then
+  cwd_style='%2~'
+elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]] then
+  cwd_style='%3~'
+elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]] then
+  cwd_style='%4~'
+elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]] then
+  cwd_style='%~'
 else
-  PROMPT='$(vcs_status)$eee%2~$fff:~$%b '
+  cwd_style='%2'
 fi
 
 
+if [[ $ZSH_JOJE_LABEL == "vcs" ]] then
+  PROMPT='$(vcs_status):~$%b '
+elif [[ $ZSH_JOJE_LABEL == "cwd" ]] then
+  PROMPT='$eee$cwd_style$fff:~$%b '
+elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]] then
+  PROMPT='$eee$cwd_style $(vcs_status)$fff:~$%b '
+elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]] then
+  PROMPT='$(vcs_status)$eee$cwd_style~$fff:~$%b '
+else
+  PROMPT='$(vcs_status)$eee$cwd_style~$fff:~$%b '
+fi
