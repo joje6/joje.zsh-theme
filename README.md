@@ -27,7 +27,7 @@ ZSH_THEME=joje
 Edit your `~/.zprofile`(or `~/.zshrc`) file
 ```sh
 export ZSH_JOJE_COLOR=blue    # (blue) green orange red white
-export ZSH_JOJE_LABEL=cwd-2   # cwd-1 cwd-2 (cwd-3) cwd-full cwd-only git-only
+export ZSH_JOJE_LABEL=cwd-2   # cwd-1 cwd-2 (cwd-3) cwd-full cwd-only vcs-only
 ```
 
 ## Update

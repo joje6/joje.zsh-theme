@@ -64,7 +64,7 @@ elif [[ $ZSH_JOJE_LABEL == "cwd-3" ]] then
   PROMPT='$(vcs_status)$eee%3~$fff:~$%b '
 elif [[ $ZSH_JOJE_LABEL == "cwd-full" ]] then
   PROMPT='$(vcs_status)$eee%~$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "git-only" ]] then
+elif [[ $ZSH_JOJE_LABEL == "vcs-only" ]] then
   PROMPT='$(vcs_status):~$%b '
 elif [[ $ZSH_JOJE_LABEL == "cwd-only" ]] then
   PROMPT='$eee%~$fff:~$%b '
