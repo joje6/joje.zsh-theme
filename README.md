@@ -1,7 +1,7 @@
 # joje.zsh-theme
 The is [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) theme.
 
-# Installation
+## Installation
 ```sh
 curl -L https://github.com/joje6/joje.zsh-theme/blob/master/install.sh | zsh
 ```
@@ -23,9 +23,12 @@ And edit your `~/.zshrc`
 ZSH_THEME=joje
 ```
 
-## Setup Style (`~/.zprofile` or `~/.zshrc`)
+## Setup Style
+Edit your `~/.zprofile`(or `~/.zshrc`) file
+```sh
 export ZSH_JOJE_COLOR=blue    # (blue) green orange red white
 export ZSH_JOJE_LABEL=cwd-2   # cwd-1 cwd-2 (cwd-3) cwd-full cwd-only git-only
+```
 
 ## Update
 ```sh
