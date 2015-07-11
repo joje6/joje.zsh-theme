@@ -39,8 +39,8 @@ git pull --ff-only origin master
 ## Screenshot
 ![Screenshot](https://raw.github.com/joje6/joje.zsh-theme/master/screenshot.png)
 
-- OSX terminal color scheme [smyck](http://color.smyck.org/)
-- Menlo 10pt
+- OSX terminal color scheme [`smyck`](http://color.smyck.org/)
+- Menlo Regular 10pt
 
 ## Notice
 - Installer & README forked from ...
