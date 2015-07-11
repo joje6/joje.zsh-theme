@@ -36,6 +36,9 @@ cd ~/.oh-my-zsh/custom/themes/joje
 git pull --ff-only origin master
 ```
 
+## Screenshot
+![Screenshot](./screenshot.png)
+
 ## Notice
 - Installer & README forked from ...
 https://github.com/tonyseek/oh-my-zsh-seeker-theme
