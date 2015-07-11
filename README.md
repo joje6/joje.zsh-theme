@@ -37,7 +37,7 @@ git pull --ff-only origin master
 ```
 
 ## Screenshot
-![Screenshot](./screenshot.png)
+![Screenshot](https://raw.github.com/joje6/joje.zsh-theme/master/screenshot.png)
 
 ## Notice
 - Installer & README forked from ...
