@@ -9,6 +9,8 @@ DST_DIR="${ZSH_CUSTOM:-${_ZSH_CUSTOM}}/themes/joje"
 
 mkdir -p `dirname ${DST_DIR}`
 
+echo ${DST_DIR}
+
 if [ -d "${DST_DIR}" ]; then
     if [ -d "${DST_DIR}/.git" ]; then
         (cd ${DST_DIR} && git pull --ff-only origin master)

@@ -1,13 +1,13 @@
 # joje.zsh-theme
-The is [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) theme.
+This is [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) theme.
 
 ## Installation
 ```sh
-curl -L https://github.com/joje6/joje.zsh-theme/blob/master/install.sh | zsh
+curl -L https://raw.github.com/joje6/joje.zsh-theme/master/install.sh | zsh
 ```
 Or
 ```sh
-wget https://github.com/joje6/joje.zsh-theme/blob/master/install.sh -O - | zsh
+wget https://raw.github.com/joje6/joje.zsh-theme/master/install.sh -O - | zsh
 ```
 
 Or you can cloning and creating a symbol link by yourself:
