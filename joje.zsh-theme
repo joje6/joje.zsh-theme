@@ -14,19 +14,19 @@ eval lightblue='$FG[081]'
 # echo $ZSH_JOJE_LABEL
 # echo $ZSH_JOJE_CWD_LEVEL
 
-if [[ $ZSH_JOJE_COLOR == "blue" ]] then
+if [[ $ZSH_JOJE_COLOR == "blue" ]]; then
   color=$blue;
   lightcolor=$lightblue;
-elif [[ $ZSH_JOJE_COLOR == "green" ]] then
+elif [[ $ZSH_JOJE_COLOR == "green" ]]; then
   color=$green;
   lightcolor=$lightgreen;
-elif [[ $ZSH_JOJE_COLOR == "orange" ]] then
+elif [[ $ZSH_JOJE_COLOR == "orange" ]]; then
   color=$orange;
   lightcolor=$lightorange;
-elif [[ $ZSH_JOJE_COLOR == "red" ]] then
+elif [[ $ZSH_JOJE_COLOR == "red" ]]; then
   color=$red;
   lightcolor=$lightred;
-elif [[ $ZSH_JOJE_COLOR == "white" ]] then
+elif [[ $ZSH_JOJE_COLOR == "white" ]]; then
   color=$eee;
   lightcolor=$fff;
 else
@@ -57,28 +57,28 @@ vcs_status() {
   fi
 }
  
-if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]] then
+if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]]; then
   cwd_style='%1~'
-elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]] then
+elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]]; then
   cwd_style='%2~'
-elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]] then
+elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]]; then
   cwd_style='%3~'
-elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]] then
+elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]]; then
   cwd_style='%4~'
-elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]] then
+elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]]; then
   cwd_style='%~'
 else
   cwd_style='%2'
 fi
 
 
-if [[ $ZSH_JOJE_LABEL == "vcs" ]] then
+if [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
   PROMPT='$(vcs_status):~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd" ]] then
+elif [[ $ZSH_JOJE_LABEL == "cwd" ]]; then
   PROMPT='$eee$cwd_style$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]] then
+elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]]; then
   PROMPT='$eee$cwd_style $(vcs_status)$fff:~$%b '
-elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]] then
+elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]]; then
   PROMPT='$(vcs_status)$eee$cwd_style~$fff:~$%b '
 else
   PROMPT='$(vcs_status)$eee$cwd_style~$fff:~$%b '
