@@ -106,6 +106,8 @@ function parse_git_status() {
     git_status="untracked"
   elif [[ $(command git status | grep 'Changes to be committed' 2> /dev/null) != "" ]]; then
     git_status="staged"
+  elif [[ $(command git remote -v | grep 'origin' 2> /dev/null) == "" ]]; then
+    git_status="noorigin"
   elif [[ $(command git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status 2> /dev/null) == "" ]]; then
     git_status="pushed"
   elif [[ $(command git status | grep 'nothing to commit' 2> /dev/null) != "" ]]; then
@@ -139,6 +141,9 @@ label_vcs() {
     elif [[ $git_status == "committed" ]]; then
       label_color=$green
       label_lightcolor=$lightgreen
+    elif [[ $git_status == "noorigin" ]]; then
+      label_color=$blue
+      label_lightcolor=$lightblue
     elif [[ $git_status == "pushed" ]]; then
       label_color=$blue
       label_lightcolor=$lightblue
