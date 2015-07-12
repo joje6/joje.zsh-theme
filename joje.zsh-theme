@@ -161,11 +161,12 @@ label_suffix() {
 
 
 # not in git
-# untracked "Untracked files:"
-# modified "added to commit" "Changes not staged for commit:"
-# staged "Changes to be committed"
-# committed "nothing to commit, working directory clean"
-# unpushed "git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status --quiet 2>/dev/null"
+# untracked "Untracked files:" (lightred)
+# modified "added to commit" "Changes not staged for commit:" (red)
+# staged "Changes to be committed" (orange)
+# committed "nothing to commit, working directory clean" (green)
+# pushed "git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status 2>/dev/null" (blue)
+# unknown (megenta)
 function parse_git_status() {
   local git_status=""
   
