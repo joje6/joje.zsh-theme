@@ -79,23 +79,56 @@ ZSH_THEME_HG_PROMPT_SUFFIX=$ZSH_THEME_GIT_PROMPT_SUFFIX
 ZSH_THEME_HG_PROMPT_DIRTY=$ZSH_THEME_GIT_PROMPT_DIRTY
 ZSH_THEME_HG_PROMPT_CLEAN=$ZSH_THEME_GIT_PROMPT_CLEAN
 
+
+is_git_inside() {
+  if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+is_git_dirty() {
+  local STATUS=''
+  local FLAGS
+  FLAGS=('--porcelain')
+  if [[ "$(command git config --get oh-my-zsh.hide-dirty)" != "1" ]]; then
+    if [[ $POST_1_7_2_GIT -gt 0 ]]; then
+      FLAGS+='--ignore-submodules=dirty'
+    fi
+    if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
+      FLAGS+='--untracked-files=no'
+    fi
+    STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
+  fi
+  if [[ -n $STATUS ]]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
 vcs_status() {
-  if [[ $(whence in_svn) != "" ]] && in_svn; then
+  if [[ $(is_git_inside) == 1 ]]; then
+    git_prompt_info
+  elif [[ $(whence in_svn) != "" ]] && in_svn; then
     svn_prompt_info
   elif [[ $(whence in_hg) != "" ]] && in_hg; then
     hg_prompt_info
   else
-    git_prompt_info
+    echo ""
   fi
 }
 
-get_vcs_dirty() {
-  if [[ $(whence in_svn) != "" ]] && in_svn; then
-    svn diff --quiet || echo "*"
+is_vcs_dirty() {
+  if [[ $(is_git_inside) == 1 ]]; then
+    echo $(is_git_dirty)
+  elif [[ $(whence in_svn) != "" ]] && in_svn; then
+    echo 0
   elif [[ $(whence in_hg) != "" ]] && in_hg; then
-    echo ""
+    echo 0
   else
-    git diff --quiet || echo "*"
+    echo 0
   fi
 }
 
@@ -104,12 +137,12 @@ label_vcs() {
     echo ""
   else 
     if [[ $dirtycolor == "*" ]]; then
-      if [[ -n $(get_vcs_dirty) ]]; then
+      if [[ $(is_vcs_dirty) == 1 ]]; then
         echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}+%{$lightcolor%}]%{$reset_color%}"
       else
         echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
       fi
-    elif [[ -n $(get_vcs_dirty) ]]; then
+    elif [[ $(is_vcs_dirty) == 1 ]]; then
       echo "%{$reset_color%}%{$lightcolor%}[%{$dirtycolor%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
     else
       echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
