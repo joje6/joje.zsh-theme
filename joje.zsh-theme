@@ -81,7 +81,7 @@ ZSH_THEME_HG_PROMPT_CLEAN=$ZSH_THEME_GIT_PROMPT_CLEAN
 
 
 is_git_inside() {
-  if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
+  if [[ "$(command git rev-parse --is-inside-work-tree 2> /dev/null)" == "true" ]]; then
     echo 1
   else
     echo 0
@@ -171,6 +171,8 @@ label_suffix() {
 }
 
 print_prompt() {
+  # echo "$(is_git_inside) $(is_git_dirty)"
+
   if [[ $(vcs_status) == "" ]]; then
     echo '$(label_cwd)$(label_suffix) '
   elif [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
