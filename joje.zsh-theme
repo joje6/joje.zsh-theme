@@ -91,22 +91,25 @@ vcs_status() {
 
 get_vcs_dirty() {
   if [[ $(whence in_svn) != "" ]] && in_svn; then
-    svn diff --quiet || echo '*'
+    svn diff --quiet || echo "*"
   elif [[ $(whence in_hg) != "" ]] && in_hg; then
-    git diff --quiet || echo '*'
+    echo ""
   else
-    git diff --quiet || echo '*'
+    git diff --quiet || echo "*"
   fi
 }
 
-label_vcs() {
-  dirty=$(get_vcs_dirty)
-  if [[ $dirtycolor == "*" ]]; then
-    echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}*%{$lightcolor%}]%{$reset_color%}"
-  elif [[ -n $dirty ]]; then
-    echo "%{$reset_color%}%{$lightcolor%}[%{$dirtycolor%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
-  else
-    echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
+label_vcs() {  
+  if [[ $(vcs_status) == "" ]]; then
+    echo ""
+  else 
+    if [[ $dirtycolor == "*" ]]; then
+      echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}*%{$lightcolor%}]%{$reset_color%}"
+    elif [[ -n $(get_vcs_dirty) ]]; then
+      echo "%{$reset_color%}%{$lightcolor%}[%{$dirtycolor%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
+    else
+      echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
+    fi
   fi
 }
 
@@ -127,20 +130,23 @@ label_cwd() {
 }
 
 label_suffix() {
-  echo "~$fff:~$%b"
+  echo "$fff:~$%b"
 }
 
+print_prompt() {
+  if [[ $(vcs_status) == "" ]]; then
+    echo '$(label_cwd)$(label_suffix) '
+  elif [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
+    echo '$(label_vcs)$(label_suffix) '
+  elif [[ $ZSH_JOJE_LABEL == "cwd" ]]; then
+    echo '$(label_cwd)$(label_suffix) '
+  elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]]; then
+    echo '$(label_cwd) $(label_vcs)$(label_suffix) '
+  elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]]; then
+    echo '$(label_vcs) $(label_cwd)$(label_suffix) '
+  else
+    echo '$(label_vcs) $(label_cwd)$(label_suffix) '
+  fi
+}
 
-PROMPT=""
-
-if [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
-  PROMPT='$(label_vcs)$(label_suffix) '
-elif [[ $ZSH_JOJE_LABEL == "cwd" ]]; then
-  PROMPT='$(label_cwd)$(label_suffix) '
-elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]]; then
-  PROMPT='$(label_cwd) $(label_vcs)$(label_suffix) '
-elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]]; then
-  PROMPT='$(label_vcs) $(label_cwd)$(label_suffix) '
-else
-  PROMPT='$(label_vcs) $(label_cwd)$(label_suffix) '
-fi
+PROMPT="$(print_prompt)"
