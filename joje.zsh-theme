@@ -104,7 +104,11 @@ label_vcs() {
     echo ""
   else 
     if [[ $dirtycolor == "*" ]]; then
-      echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}*%{$lightcolor%}]%{$reset_color%}"
+      if [[ -n $(get_vcs_dirty) ]]; then
+        echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}*%{$lightcolor%}]%{$reset_color%}"
+      else
+        echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
+      fi
     elif [[ -n $(get_vcs_dirty) ]]; then
       echo "%{$reset_color%}%{$lightcolor%}[%{$dirtycolor%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
     else
