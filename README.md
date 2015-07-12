@@ -26,8 +26,6 @@ ZSH_THEME=joje
 ## Setup Style
 Edit your `~/.zprofile`(or `~/.zshrc`) file
 ```sh
-export ZSH_JOJE_VCS_COLOR=blue        # (blue) green orange red white gray
-export ZSH_JOJE_VCS_DIRTY_COLOR=*     # blue green orange red gray white (*) lightblue lightgreen lightorange lightred
 export ZSH_JOJE_LABEL=vcs+cwd         # cwd vcs (vcs+cwd) cwd+vcs
 export ZSH_JOJE_CWD_LEVEL=2           # 1 (2) 3 4 full
 ```
