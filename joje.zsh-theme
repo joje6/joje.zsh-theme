@@ -1,5 +1,6 @@
 eval fff='$FG[231]'
-eval eee='$FG[007]'
+eval eee='$FG[252]'
+eval ccc='$FG[007]'
 eval gray='$FG[237]'
 eval orange='$FG[214]'
 eval lightorange='$FG[178]'
@@ -120,29 +121,17 @@ vcs_status() {
   fi
 }
 
-is_vcs_dirty() {
-  if [[ $(is_git_inside) == 1 ]]; then
-    echo $(is_git_dirty)
-  elif [[ $(whence in_svn) != "" ]] && in_svn; then
-    echo 0
-  elif [[ $(whence in_hg) != "" ]] && in_hg; then
-    echo 0
-  else
-    echo 0
-  fi
-}
-
-label_vcs() {  
+label_vcs() {
   if [[ $(vcs_status) == "" ]]; then
     echo ""
   else 
     if [[ $dirtycolor == "*" ]]; then
-      if [[ $(is_vcs_dirty) == 1 ]]; then
+      if [[ $(is_git_dirty) == 1 ]]; then
         echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$red%}+%{$lightcolor%}]%{$reset_color%}"
       else
         echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
       fi
-    elif [[ $(is_vcs_dirty) == 1 ]]; then
+    elif [[ $(is_git_dirty) == 1 ]]; then
       echo "%{$reset_color%}%{$lightcolor%}[%{$dirtycolor%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
     else
       echo "%{$reset_color%}%{$lightcolor%}[%{$color%}$(vcs_status)%{$lightcolor%}]%{$reset_color%}"
@@ -152,40 +141,67 @@ label_vcs() {
 
 label_cwd() {
   if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]]; then
-    echo "$eee%1~"
+    echo "$ccc%1~"
   elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]]; then
-    echo "$eee%2~"
+    echo "$ccc%2~"
   elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]]; then
-    echo "$eee%3~"
+    echo "$ccc%3~"
   elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]]; then
-    echo "$eee%4~"
+    echo "$ccc%4~"
   elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]]; then
-    echo "$eee%~"
+    echo "$ccc%~"
   else
-    echo "$eee%2~"
+    echo "$ccc%2~"
   fi
 }
 
 label_suffix() {
-  echo "$fff:~$%b"
+  echo "$eee:~$%b"
+}
+
+
+# not in git
+# untracked "Untracked files:"
+# modified "added to commit" "Changes not staged for commit:"
+# staged "Changes to be committed"
+# committed "nothing to commit, working directory clean"
+# unpushed "git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status --quiet 2>/dev/null"
+function parse_git_status() {
+  local git_status=""
+  
+  if [[ $(command git status | grep 'Changes not staged for commit:' 2> /dev/null) != "" ]]; then
+    git_status="modified"
+  elif [[ $(command git status | grep 'Untracked files:' 2> /dev/null) != "" ]]; then
+    git_status="untracked"
+  elif [[ $(command git status | grep 'Changes to be committed' 2> /dev/null) != "" ]]; then
+    git_status="staged"
+  elif [[ $(command git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status 2> /dev/null) == "" ]]; then
+    git_status="pushed"
+  elif [[ $(command git status | grep 'nothing to commit' 2> /dev/null) != "" ]]; then
+    git_status="committed"
+  else
+    git_status="unknwon"
+  fi
+  
+  echo $git_status
 }
 
 print_prompt() {
-  # echo "$(is_git_inside) $(is_git_dirty)"
+  # echo $(parse_git_status)
 
   if [[ $(vcs_status) == "" ]]; then
-    echo '$(label_cwd)$(label_suffix) '
+    echo "$(label_cwd)$(label_suffix) "
   elif [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
-    echo '$(label_vcs)$(label_suffix) '
+    echo "$(label_vcs)$(label_suffix) "
   elif [[ $ZSH_JOJE_LABEL == "cwd" ]]; then
-    echo '$(label_cwd)$(label_suffix) '
+    echo "$(label_cwd)$(label_suffix) "
   elif [[ $ZSH_JOJE_LABEL == "cwd+vcs" ]]; then
-    echo '$(label_cwd) $(label_vcs)$(label_suffix) '
+    echo "$(label_cwd) $(label_vcs)$(label_suffix) "
   elif [[ $ZSH_JOJE_LABEL == "vcs+cwd" ]]; then
-    echo '$(label_vcs) $(label_cwd)$(label_suffix) '
+    echo "$(label_vcs) $(label_cwd)$(label_suffix) "
   else
-    echo '$(label_vcs) $(label_cwd)$(label_suffix) '
+    echo "$(label_vcs) $(label_cwd)$(label_suffix) "
   fi
 }
 
-PROMPT="$(print_prompt)"
+PROMPT='$(print_prompt)'
