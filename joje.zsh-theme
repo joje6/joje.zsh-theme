@@ -11,57 +11,8 @@ eval lightred='$FG[196]'
 eval blue='$FG[032]'
 eval lightblue='$FG[081]'
 
-# echo $ZSH_JOJE_VCS_COLOR
-# echo $ZSH_JOJE_VCS_DIRTY_COLOR
 # echo $ZSH_JOJE_LABEL
 # echo $ZSH_JOJE_CWD_LEVEL
-
-dirtycolor="*"
-
-if [[ $ZSH_JOJE_VCS_COLOR == "blue" ]]; then
-  color=$blue;
-  lightcolor=$lightblue;
-elif [[ $ZSH_JOJE_VCS_COLOR == "green" ]]; then
-  color=$green;
-  lightcolor=$lightgreen;
-elif [[ $ZSH_JOJE_VCS_COLOR == "orange" ]]; then
-  color=$orange;
-  lightcolor=$lightorange;
-elif [[ $ZSH_JOJE_VCS_COLOR == "red" ]]; then
-  color=$red;
-  lightcolor=$lightred;
-elif [[ $ZSH_JOJE_VCS_COLOR == "white" ]]; then
-  color=$eee;
-  lightcolor=$fff;
-elif [[ $ZSH_JOJE_VCS_COLOR == "gray" ]]; then
-  color=$eee;
-  lightcolor=$gray;
-else
-  color=$blue;
-  lightcolor=$lightblue;
-fi
-
-if [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "blue" ]]; then
-  dirtycolor=$blue;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "green" ]]; then
-  dirtycolor=$green;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "orange" ]]; then
-  dirtycolor=$orange;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "red" ]]; then
-  dirtycolor=$red;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "lightblue" ]]; then
-  dirtycolor=$lightblue;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "lightgreen" ]]; then
-  dirtycolor=$lightgreen;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "lightorange" ]]; then
-  dirtycolor=$lightorange;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "lightred" ]]; then
-  dirtycolor=$lightred;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "gray" ]]; then
-  dirtycolor=$eee;
-elif [[ $ZSH_JOJE_VCS_DIRTY_COLOR == "white" ]]; then
-  dirtycolor=$white;
-fi
 
 # ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$lightcolor%}[%{$color%}"
 # ZSH_THEME_GIT_PROMPT_SUFFIX=""
@@ -121,7 +72,7 @@ vcs_status() {
   fi
 }
 
-label_vcs() {
+__label_vcs() {
   if [[ $(vcs_status) == "" ]]; then
     echo ""
   else 
@@ -138,27 +89,6 @@ label_vcs() {
     fi
   fi
 }
-
-label_cwd() {
-  if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]]; then
-    echo "$ccc%1~"
-  elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]]; then
-    echo "$ccc%2~"
-  elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]]; then
-    echo "$ccc%3~"
-  elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]]; then
-    echo "$ccc%4~"
-  elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]]; then
-    echo "$ccc%~"
-  else
-    echo "$ccc%2~"
-  fi
-}
-
-label_suffix() {
-  echo "$eee:~$%b"
-}
-
 
 # not in git
 # untracked "Untracked files:" (lightred)
@@ -187,9 +117,58 @@ function parse_git_status() {
   echo $git_status
 }
 
-print_prompt() {
-  # echo $(parse_git_status)
+label_vcs() {
+  local git_status=$(parse_git_status)
+  # echo $git_status
+  
+  if [[ $(vcs_status) == "" ]]; then
+    echo ""
+  else
+    local label_color=$ccc
+    local label_lightcolor=$eee
+    
+    if [[ $git_status == "untracked" ]]; then
+      label_color=$lightred
+      label_lightcolor=$red
+    elif [[ $git_status == "modified" ]]; then
+      label_color=$red
+      label_lightcolor=$lightred
+    elif [[ $git_status == "staged" ]]; then
+      label_color=$orange
+      label_lightcolor=$lightorange
+    elif [[ $git_status == "committed" ]]; then
+      label_color=$green
+      label_lightcolor=$lightgreen
+    elif [[ $git_status == "pushed" ]]; then
+      label_color=$blue
+      label_lightcolor=$lightblue
+    fi
+    
+    echo "%{$reset_color%}%{$label_lightcolor%}[%{$label_color%}$(vcs_status)%{$label_lightcolor%}]%{$reset_color%}"
+  fi
+}
 
+label_cwd() {
+  if [[ $ZSH_JOJE_CWD_LEVEL == "1" ]]; then
+    echo "$ccc%1~"
+  elif [[ $ZSH_JOJE_CWD_LEVEL == "2" ]]; then
+    echo "$ccc%2~"
+  elif [[ $ZSH_JOJE_CWD_LEVEL == "3" ]]; then
+    echo "$ccc%3~"
+  elif [[ $ZSH_JOJE_CWD_LEVEL == "4" ]]; then
+    echo "$ccc%4~"
+  elif [[ $ZSH_JOJE_CWD_LEVEL == "full" ]]; then
+    echo "$ccc%~"
+  else
+    echo "$ccc%2~"
+  fi
+}
+
+label_suffix() {
+  echo "$eee:~$%b"
+}
+
+print_prompt() {
   if [[ $(vcs_status) == "" ]]; then
     echo "$(label_cwd)$(label_suffix) "
   elif [[ $ZSH_JOJE_LABEL == "vcs" ]]; then
