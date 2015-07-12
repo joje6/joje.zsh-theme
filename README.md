@@ -39,6 +39,12 @@ git pull --ff-only origin master
 ## Screenshot
 ![Screenshot](https://raw.github.com/joje6/joje.zsh-theme/master/screenshot.png)
 
+- Status Color
+  - untracked: lightred
+  - modified: red
+  - staged: orange
+  - committed: green
+  - pushed: blue
 - OSX terminal color scheme [`smyck`](http://color.smyck.org/)
 - Menlo Regular 10pt
 
