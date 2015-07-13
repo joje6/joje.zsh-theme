@@ -140,7 +140,7 @@ function parse_git_status() {
 
 label_vcs() {
   local git_status=$(parse_git_status)
-  echo $git_status
+  # echo $git_status
   
   if [[ $(vcs_status) == "" ]]; then
     echo ""
