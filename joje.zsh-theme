@@ -106,12 +106,33 @@ function parse_git_status() {
     git_status="untracked"
   elif [[ $(command git status | grep 'Changes to be committed' 2> /dev/null) != "" ]]; then
     git_status="staged"
-  elif [[ $(command git status | grep 'branch is up-to-date with' 2> /dev/null) != "" ]]; then
+  if [[ $(command git status | grep 'branch is up-to-date with' 2> /dev/null) != "" ]]; then
     git_status="pushed"
-  elif [[ $(command git status | grep 'nothing to commit' 2> /dev/null) != "" ]]; then
-    git_status="committed"
   fi
-  
+
+  local git_bad_origin=""
+  if [[ $(command git remote -v | grep 'origin' 2> /dev/null) == "" ]]; then
+    git_bad_origin="noorigin"
+  elif [[ $(command git log 2>&1 | grep 'bad default revision') != "" ]]; then
+    git_bad_origin="badorigin"
+  fi
+
+  if [[ $git_bad_origin == "badorigin" || $git_bad_origin == "noorigin" ]]; then
+    if [[ $(command git status | grep 'nothing to commit' 2> /dev/null) != "" ]]; then
+      git_status="committed"
+    fi
+  else
+    if [[ $(command git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-status 2>&1 /dev/null) == "" ]]; then
+      git_status="pushed"
+    elif [[ $(command git status | grep 'nothing to commit' 2> /dev/null) != "" ]]; then
+      git_status="committed"
+    fi
+  fi
+
+  if [[ $git_status == "" ]]; then
+    $git_status = $git_bad_origin
+  fi
+
   echo $git_status
 }
 
