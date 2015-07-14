@@ -212,3 +212,4 @@ print_prompt() {
 }
 
 PROMPT='$(print_prompt)'
+RPROMPT="$HOST"
