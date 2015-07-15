@@ -139,14 +139,14 @@ function parse_git_status() {
 }
 
 label_vcs() {
-  local git_status=$(parse_git_status)
-  # echo $git_status
   
   if [[ $(vcs_status) == "" ]]; then
     echo ""
   else
+    local git_status=$(parse_git_status)
     local label_color=$ccc
     local label_lightcolor=$eee
+    # echo $git_status
     
     if [[ $git_status == "untracked" ]]; then
       label_color=$lightred
