@@ -212,4 +212,5 @@ print_prompt() {
 }
 
 PROMPT='$(print_prompt)'
-RPROMPT="$HOST"
+# RPROMPT="$HOST"
+RPROMPT=""
