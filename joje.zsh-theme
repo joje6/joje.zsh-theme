@@ -62,11 +62,7 @@ is_git_dirty() {
 
 vcs_status() {
   if [[ $(is_git_inside) == 1 ]]; then
-    git_prompt_info
-  elif [[ $(whence in_svn) != "" ]] && in_svn; then
-    svn_prompt_info
-  elif [[ $(whence in_hg) != "" ]] && in_hg; then
-    hg_prompt_info
+    git_current_branch
   else
     echo ""
   fi
@@ -138,8 +134,7 @@ function parse_git_status() {
   echo $git_status
 }
 
-label_vcs() {
-  
+label_vcs() {  
   if [[ $(vcs_status) == "" ]]; then
     echo ""
   else
@@ -212,5 +207,4 @@ print_prompt() {
 }
 
 PROMPT='$(print_prompt)'
-# RPROMPT="$HOST"
 RPROMPT=""
